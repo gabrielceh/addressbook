@@ -62,7 +62,7 @@ const ContactApp = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container container-app">
       <h1 className="main-title">Contact App</h1>
       <AlertModal
         modalIsActive={modalIsActive}

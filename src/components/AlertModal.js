@@ -5,9 +5,9 @@ const AlertModal = ({ modalIsActive, setModalIsActive, alertMessage, setAlertMes
 
   useEffect(() => {
     if (modalIsActive) {
-      refModal.current.style.display = 'block';
+      refModal.current.classList.add('modal-active');
     } else {
-      refModal.current.style.display = 'none';
+      refModal.current.classList.remove('modal-active');
     }
   }, [modalIsActive]);
 
@@ -15,12 +15,11 @@ const AlertModal = ({ modalIsActive, setModalIsActive, alertMessage, setAlertMes
     if (modalIsActive) {
       setModalIsActive(false);
       setAlertMessage('');
-      refModal.current.style.display = 'none';
     }
   };
 
   return (
-    <div className="container mt-2 component-container" ref={refModal}>
+    <div className="container mt-2 component-container modal-container" ref={refModal}>
       <div className="alert alert-primary alert-dismissible fade show" role="alert">
         <p>{alertMessage}</p>
         <button
