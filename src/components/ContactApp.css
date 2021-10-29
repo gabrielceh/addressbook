@@ -1,0 +1,19 @@
+.main-title {
+  text-align: center;
+}
+
+.component-container {
+  box-sizing: border-box;
+  margin: 2rem auto;
+}
+.component-title {
+  margin: 2rem auto;
+  color: #222;
+}
+
+.form {
+  box-sizing: border-box;
+  padding: 2rem;
+  box-shadow: 1px 1px 5px #ccc;
+  border-radius: 5px;
+}

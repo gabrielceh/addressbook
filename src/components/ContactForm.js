@@ -19,15 +19,25 @@ const validateNames = (text) => {
 };
 
 const validatePhone = (number) => {
-  let regText = /^([+][\d]*[ ]?)?[\d]{10}$/g;
-  if (regText.test(number)) {
+  //Valida que el telefono tenga 10 digitos(celular) o 7 digitos (fijo)
+  //tambien si el telefono comienza con el indicativo de un pais o no
+  let regMobile = /^([+][\d]*[ ]?)?[\d]{10}$/g,
+    regHome = /^([+][\d]*[ ]?)?[\d]{7}$/g;
+  if (regMobile.test(number) || regHome.test(number)) {
     return true;
   } else {
     return false;
   }
 };
 
-const ContactForm = ({ createContact, updateContact, isEdit, setIsEdit }) => {
+const ContactForm = ({
+  createContact,
+  updateContact,
+  isEdit,
+  setIsEdit,
+  setAlertMessage,
+  setModalIsActive,
+}) => {
   const [form, setForm] = useState(initialForm);
 
   let accion = isEdit ? 'Eitar Contacto' : 'Agregar Contacto';
@@ -51,19 +61,23 @@ const ContactForm = ({ createContact, updateContact, isEdit, setIsEdit }) => {
     e.preventDefault();
 
     if (!form.names || !form.last_name || !form.phone || !form.address) {
-      alert('Todos los campos son requeridos');
+      setAlertMessage('Todos los campos son requeridos');
+      setModalIsActive(true);
       return;
     }
     if (!validateNames(form.names)) {
-      alert('El nombre no puede contener numeros y/o caracteres especiales');
+      setAlertMessage('El nombre no puede contener numeros y/o caracteres especiales');
+      setModalIsActive(true);
       return;
     }
     if (!validateNames(form.last_name)) {
-      alert('El apellido no puede contener numeros y/o caracteres especiales');
+      setAlertMessage('El apellido no puede contener numeros y/o caracteres especiales');
+      setModalIsActive(true);
       return;
     }
     if (!validatePhone(form.phone)) {
-      alert('El numero de teléfono no es valido');
+      setAlertMessage('El numero de teléfono no es valido');
+      setModalIsActive(true);
       return;
     }
     if (form.id === null) {
@@ -81,48 +95,62 @@ const ContactForm = ({ createContact, updateContact, isEdit, setIsEdit }) => {
   };
 
   return (
-    <div>
-      <h3>{accion}</h3>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="text"
-            name="names"
-            placeholder="Nombres"
-            onChange={handleChange}
-            value={form.names}
-          />
+    <div className="component-container">
+      <h3 className="component-title">{accion}</h3>
+      <form onSubmit={handleSubmit} className="container form">
+        <div className="mb-3 row">
+          <div className="col">
+            <input
+              type="text"
+              name="names"
+              placeholder="Nombres"
+              className="form-control"
+              onChange={handleChange}
+              value={form.names}
+            />
+          </div>
+          <div className="col">
+            <input
+              type="text"
+              name="last_name"
+              placeholder="Apellidos"
+              className="form-control"
+              onChange={handleChange}
+              value={form.last_name}
+            />
+          </div>
         </div>
-        <div>
-          <input
-            type="text"
-            name="last_name"
-            placeholder="Apellidos"
-            onChange={handleChange}
-            value={form.last_name}
-          />
+        <div className="mb-3 row">
+          <div className="col">
+            <input
+              type="text"
+              name="phone"
+              placeholder="Teléfono"
+              className="form-control"
+              onChange={handleChange}
+              value={form.phone}
+            />
+          </div>
+          <div className="col">
+            <input
+              type="text"
+              name="address"
+              placeholder="Direccion"
+              className="form-control"
+              onChange={handleChange}
+              value={form.address}
+            />
+          </div>
         </div>
-        <div>
+
+        <div className="gap-3 d-md-flex justify-content-md-center mb-3">
+          <input type="submit" value="Enviar" className="btn btn-outline-primary" />
           <input
-            type="text"
-            name="phone"
-            placeholder="Teléfono"
-            onChange={handleChange}
-            value={form.phone}
+            type="reset"
+            value="Limpiar"
+            className="btn btn-outline-primary"
+            onClick={handleClear}
           />
-        </div>
-        <div>
-          <input
-            type="text"
-            name="address"
-            placeholder="Direccion"
-            onChange={handleChange}
-            value={form.address}
-          />
-        </div>
-        <div>
-          <input type="submit" value="Enviar" />
-          <input type="reset" value="Limpiar" onClick={handleClear} />
         </div>
       </form>
     </div>

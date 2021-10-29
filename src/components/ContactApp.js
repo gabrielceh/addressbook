@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import ContacTable from './ContacTable';
 import ContactForm from './ContactForm';
 import generateUUID from '../helpers/uniqueId';
+import './ContactApp.css';
+import AlertModal from './AlertModal';
 
 const ls = localStorage,
   lsDB = 'contacts';
@@ -11,6 +13,8 @@ const initialDataBase = ls.getItem(lsDB) ? JSON.parse(ls.getItem(lsDB)) : [];
 const ContactApp = () => {
   const [dataBase, setDataBase] = useState([]);
   const [isEdit, setIsEdit] = useState(null);
+  const [modalIsActive, setModalIsActive] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     setDataBase([...initialDataBase]);
@@ -19,13 +23,16 @@ const ContactApp = () => {
   const createContact = (contact) => {
     let phoneInDataBase = dataBase.find((el) => el.phone === contact.phone);
     if (phoneInDataBase) {
-      alert('El teléfono del usuario ya esta en la lista de contactos');
+      setAlertMessage('El teléfono del usuario ya esta en la lista de contactos');
+      setModalIsActive(true);
+
       return;
     }
     contact.id = generateUUID();
     setDataBase([...dataBase, contact]);
     ls.setItem(lsDB, JSON.stringify([...dataBase, contact]));
-    alert('Contacto agregado');
+    setAlertMessage('Contacto agregado');
+    setModalIsActive(true);
   };
 
   const updateContact = (contact) => {
@@ -35,9 +42,11 @@ const ContactApp = () => {
     if (contact === validateContact) {
       setDataBase([...newContacts]);
       ls.setItem(lsDB, JSON.stringify([...newContacts]));
-      alert('Contacto actualizado');
+      setAlertMessage('Contacto actualizado');
+      setModalIsActive(true);
     } else {
-      alert('No se pudo actualizar el contacto');
+      setAlertMessage('No se pudo actualizar el contacto');
+      setModalIsActive(true);
     }
   };
 
@@ -47,21 +56,31 @@ const ContactApp = () => {
       let newContacts = dataBase.filter((el) => el.phone !== phone);
       setDataBase([...newContacts]);
       ls.setItem(lsDB, JSON.stringify([...newContacts]));
-      alert('Contacto Eliminado');
+      setAlertMessage('Contacto Eliminado');
+      setModalIsActive(true);
     }
   };
 
   return (
-    <>
-      <h1>Contact App</h1>
+    <div className="container">
+      <h1 className="main-title">Contact App</h1>
+      <AlertModal
+        modalIsActive={modalIsActive}
+        setModalIsActive={setModalIsActive}
+        alertMessage={alertMessage}
+        setAlertMessage={setAlertMessage}
+      />
       <ContactForm
         createContact={createContact}
         updateContact={updateContact}
         isEdit={isEdit}
         setIsEdit={setIsEdit}
+        setAlertMessage={setAlertMessage}
+        setModalIsActive={setModalIsActive}
       />
+      <hr />
       <ContacTable data={dataBase} deleteContact={deleteContact} setIsEdit={setIsEdit} />
-    </>
+    </div>
   );
 };
 

@@ -3,16 +3,16 @@ import ContactRow from './ContactRow';
 
 const ContacTable = ({ data, deleteContact, setIsEdit }) => {
   return (
-    <div>
-      <h3>Lsita de Contactos</h3>
-      <table>
-        <thead>
+    <div className="component-container">
+      <h3 className="row mb-3 component-title">Lista de Contactos</h3>
+      <table className="table">
+        <thead className="table-dark">
           <tr>
             <th>Nombres</th>
             <th>Apellidos</th>
             <th>Teléfono</th>
             <th>Direccion</th>
-            <th>Accion</th>
+            <th>Acción</th>
           </tr>
         </thead>
         <tbody>
