@@ -1,20 +1,44 @@
 import React, { useState, useEffect } from 'react';
 
 let initialForm = {
+  id: null,
   names: '',
   last_name: '',
   phone: '',
   address: '',
 };
 
-const ContactForm = () => {
+const ContactForm = ({ createContact, updateContact, isEdit, setIsEdit }) => {
   const [form, setForm] = useState(initialForm);
 
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const handleClear = () => {};
+    if (!form.names || !form.last_name || !form.phone || !form.address) {
+      alert('Todos los campos son requeridos');
+      return;
+    }
+
+    if (form.id === null) {
+      createContact(form);
+    } else {
+      updateContact(form);
+    }
+
+    handleClear();
+  };
+
+  const handleClear = (e) => {
+    setForm(initialForm);
+    setIsEdit(null);
+  };
 
   return (
     <div>
