@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+/**Estado inicial del formulario
+ * Todos los campos estan vacios y el id es nulo
+ */
 let initialForm = {
   id: null,
   names: '',
@@ -8,6 +11,7 @@ let initialForm = {
   address: '',
 };
 
+/**Validacion para los nombres y apellidos */
 const validateNames = (text) => {
   /* /^[A-Za-zÑñÁÉÍÓÚÜáéíóúü\s]+$/g */
   let regText = /^([A-ZÑÁÉÍÓÚÜ]{1}[a-zñáéíóúü]+[\s]*)+$/g;
@@ -18,9 +22,11 @@ const validateNames = (text) => {
   }
 };
 
+/**Validacion para el numero de telefono
+ * Valida que el telefono tenga 10 digitos(celular) o 7 digitos (fijo)
+ * Tambien si el telefono comienza con el indicativo de un pais o no
+ */
 const validatePhone = (number) => {
-  //Valida que el telefono tenga 10 digitos(celular) o 7 digitos (fijo)
-  //tambien si el telefono comienza con el indicativo de un pais o no
   let regMobile = /^([+][\d]*[ ]?)?[\d]{10}$/g,
     regHome = /^([+][\d]*[ ]?)?[\d]{7}$/g;
   if (regMobile.test(number) || regHome.test(number)) {
@@ -38,10 +44,17 @@ const ContactForm = ({
   setAlertMessage,
   setModalIsActive,
 }) => {
+  /**Variable de estado para controlar el formulario de contactos */
   const [form, setForm] = useState(initialForm);
 
+  /**Variable para el titulo de la seccion */
   let accion = isEdit ? 'Eitar Contacto' : 'Agregar Contacto';
 
+  /**Vigilará si el estado de isEdit cambia para saber si se edita o no.
+   * Se se esta editando, el estado del formulario reibirá el objeto de isEdit(informacion del contacto a editar)
+   * Al recibirlo, los inputs del formulario, obtendran el valor que este objeto tenga
+   * En caso de que no se este editando, el formulario recibirá la configuracion inicial
+   */
   useEffect(() => {
     if (isEdit) {
       setForm(isEdit);
@@ -50,6 +63,11 @@ const ContactForm = ({
     }
   }, [isEdit]);
 
+  /**Manejador de los cambios en los inputs
+   * Cuando cambie un input, se alterará la propiedad del form que tenga el mismo nombre del input
+   * Por ejemplo, si se escribe en apellidos, su name = "last_name", es igual a la propiedad "last_name" del estado form y 
+    se le asignará el valor que viene en el input 
+   */
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -57,6 +75,11 @@ const ContactForm = ({
     });
   };
 
+  /**Manejador del submit del formulario
+   * Realizará las validaciones
+   * Si todos es correcto, validará si se esta creando o editando un contacto, dependiendo del id del form
+   * Si el id esta vacio es porque se esta creando un nuevo contacto, si no, es porque se está editando
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -89,6 +112,10 @@ const ContactForm = ({
     handleClear();
   };
 
+  /**Manejador para limpiar el formulario
+   * Pasará el estado inicial a form lo que hará que los inputs queden en su estado original
+   * Actualizá el estado de isEdit a null, lo cual indicará que no se esta editando
+   */
   const handleClear = (e) => {
     setForm(initialForm);
     setIsEdit(null);

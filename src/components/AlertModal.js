@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 
 const AlertModal = ({ modalIsActive, setModalIsActive, alertMessage, setAlertMessage }) => {
+  /**Guardamos la referencia de modal */
   const refModal = useRef();
 
+  /**Se activara o desactivara el modal segun el estado de modalIsActive */
   useEffect(() => {
     if (modalIsActive) {
       refModal.current.classList.add('modal-active');
@@ -11,6 +13,9 @@ const AlertModal = ({ modalIsActive, setModalIsActive, alertMessage, setAlertMes
     }
   }, [modalIsActive]);
 
+  /**Desactivamos el modal, pasandole false al estado
+   * Devolvemos el estado de los mensajes de alerta a vacio
+   */
   const handleModal = (e) => {
     if (modalIsActive) {
       setModalIsActive(false);
