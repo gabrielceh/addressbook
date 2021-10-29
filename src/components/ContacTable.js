@@ -1,7 +1,7 @@
 import React from 'react';
 import ContactRow from './ContactRow';
 
-const ContacTable = ({ data, deleteContact }) => {
+const ContacTable = ({ data, deleteContact, setIsEdit }) => {
   return (
     <div>
       <h3>Lsita de Contactos</h3>
@@ -21,7 +21,9 @@ const ContacTable = ({ data, deleteContact }) => {
               <td colSpan="5">Sin registros en la libreta de contactos</td>
             </tr>
           ) : (
-            data.map((el) => <ContactRow key={el.phone} el={el} deleteContact={deleteContact} />)
+            data.map((el) => (
+              <ContactRow key={el.id} el={el} deleteContact={deleteContact} setIsEdit={setIsEdit} />
+            ))
           )}
         </tbody>
       </table>

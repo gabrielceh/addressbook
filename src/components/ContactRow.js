@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ContactRow = ({ el, deleteContact }) => {
+const ContactRow = ({ el, deleteContact, setIsEdit }) => {
   return (
     <tr>
       <td>{el.names}</td>
@@ -8,7 +8,14 @@ const ContactRow = ({ el, deleteContact }) => {
       <td>{el.phone}</td>
       <td>{el.address}</td>
       <td>
-        <button title="Editar">Editar 📝</button>
+        <button
+          title="Editar"
+          onClick={(e) => {
+            setIsEdit(el);
+          }}
+        >
+          Editar 📝
+        </button>
         <button title="Borrar" onClick={(e) => deleteContact(el.phone)}>
           Borrar ❌
         </button>
