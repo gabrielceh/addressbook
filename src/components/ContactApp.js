@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ContacTable from './ContacTable';
 import ContactForm from './ContactForm';
-import generateUUID from '../helpers/uniqueId';
 import './ContactApp.css';
 import AlertModal from './AlertModal';
+import { v4 as uuidv4 } from 'uuid';
 
 /**Guarda localStorage en una variable
  * Guarda el item que usaremos para localStorage
@@ -37,7 +37,7 @@ const ContactApp = () => {
   /**Funcion agragar contacto
    * Recibe un objeto con los datos del usuario, excepto el id
    * Valida si el numero de telefono del contacto ya está en la base de datos, si ya esté el numero, no agregará al contacto
-   * Si el numero no está, generará un id unico(funcion generateUUID que se encuentra en el archivo uniqueID.js en la carpeta helpers)
+   * Si el numero no está, generará un id unico(usamos la libreria)
    * Almacenaremos los contactos que ya estan en la base de datos de contactos y agregaremos el nuevo contacto
    * Cambiaremos el estado de alertMessage y modalIsActive para que muestre el modal
    */
@@ -46,10 +46,9 @@ const ContactApp = () => {
     if (phoneInDataBase) {
       setAlertMessage('El teléfono del usuario ya esta en la lista de contactos');
       setModalIsActive(true);
-
       return;
     }
-    contact.id = generateUUID();
+    contact.id = uuidv4();
     setDataBase([...dataBase, contact]);
     ls.setItem(lsDB, JSON.stringify([...dataBase, contact]));
     setAlertMessage('Contacto agregado');
